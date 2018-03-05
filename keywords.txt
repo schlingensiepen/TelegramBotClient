@@ -1,0 +1,27 @@
+###########################################
+# Syntax Coloring Map For TelegramBotClient
+###########################################
+
+###########################################
+# Datatypes (KEYWORD1)
+###########################################
+
+TelegramBotClient		KEYWORD1
+JsonWebClient			KEYWORD1
+JwcClientState			KEYWORD1
+JwcProcessError			KEYWORD1
+TelegramProcessError	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+loop 			KEYWORD2
+begin 			KEYWORD2
+setCallbacks 	KEYWORD2
+loop			KEYWORD2
+postMessage		KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
