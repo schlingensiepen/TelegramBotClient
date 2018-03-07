@@ -8,7 +8,8 @@ Client is set up with the security token provided by BotFather
 and some callbacks. Thus it shall be polled by calling `.loop()` 
 in each main `loop()`.
 
-Full documentation of API will be accessible soon (see. road map).
+Full documentation of API will can be found on gitHub: 
+https://schlingensiepen.github.io/TelegramBotClient/
 
 ## Limitations
 - The client uses underlying SSL-Client objects which may consume a lot of

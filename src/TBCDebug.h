@@ -2,7 +2,7 @@
 #ifndef TBDebug_h
 #define TBDebug_h
 
-#define TBCVERBOSE
+//define TBCVERBOSE
 
 #ifdef TBCVERBOSE
  #define DOUT(x)        { Serial.print (F(x)); \
