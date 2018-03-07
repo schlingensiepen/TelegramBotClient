@@ -53,9 +53,9 @@ bool TelegramBotClient::loop()
   SslPostClient->loop();
 
   if (
-    SslPollClient->state() == JwcClientState::unconnected
+    SslPollClient->state() == JwcClientState::Unconnected
     &&
-    ( SslPostClient-> state() == JwcClientState::unconnected
+    ( SslPostClient-> state() == JwcClientState::Unconnected
       || Parallel
     ))
   {
@@ -89,7 +89,7 @@ void TelegramBotClient::startPolling()
   SslPollClient->fire (httpCommands, 5);
 }
 
-String toString(const char* tmp)
+String charToString(const char* tmp)
 {
   if (tmp == 0) return String();
   return String(tmp);
@@ -106,34 +106,34 @@ void TelegramBotClient::pollSuccess(JwcProcessError err, JsonObject& payload)
     return;
   }
   Message* msg = new Message();
-  msg->update_id = payload["result"][0]["update_id"];
-  DOUTKV("update_id", msg->update_id);
-  LastUpdateId = msg->update_id + 1;
-  msg->message_id = payload["result"][0]["message"]["message_id"];
-  DOUTKV("message_id", msg->message_id);
-  msg->from_id = payload["result"][0]["message"]["from"]["id"];
-  DOUTKV("from_id", msg->from_id);
-  msg->from_is_bot = payload["result"][0]["message"]["from"]["is_bot"];
-  DOUTKV("from_is_bot", msg->from_is_bot);
-  msg->from_first_name = toString(payload["result"][0]["message"]["from"]["first_name"]);
-  DOUTKV("from_first_name", msg->from_first_name);
-  msg->from_last_name = toString(payload["result"][0]["message"]["from"]["last_name"]);
-  DOUTKV("from_last_name", msg->from_last_name);
-  msg->from_language_code = toString(payload["result"][0]["message"]["from"]["language_code"]);
-  DOUTKV("from_language_code", msg->from_language_code);
-  msg->chat_id = payload["result"][0]["message"]["chat"]["id"];
-  DOUTKV("chat_id", msg->chat_id);
-  msg->chat_first_name = toString(payload["result"][0]["message"]["chat"]["first_name"]);
-  DOUTKV("chat_first_name", msg->chat_first_name);
-  msg->chat_last_name = toString(payload["result"][0]["message"]["chat"]["last_name"]);
-  DOUTKV("chat_last_name", msg->chat_last_name);
-  msg->chat_type = toString(payload["result"][0]["message"]["chat"]["type"]);
-  DOUTKV("chat_type", msg->chat_type);
-  msg->text = toString(payload["result"][0]["message"]["text"]);
-  DOUTKV("text", msg->text);
-  msg->date = payload["result"][0]["message"]["date"];
-  DOUTKV("date", msg->date);
-  if (msg->from_id == 0 || msg->chat_id == 0 || msg->text.length() == 0)
+  msg->UpdateId = payload["result"][0]["update_id"];
+  DOUTKV("UpdateId", msg->UpdateId);
+  LastUpdateId = msg->UpdateId + 1;
+  msg->MessageId = payload["result"][0]["message"]["message_id"];
+  DOUTKV("MessageId", msg->MessageId);
+  msg->FromId = payload["result"][0]["message"]["from"]["id"];
+  DOUTKV("FromId", msg->FromId);
+  msg->FromIsBot = payload["result"][0]["message"]["from"]["is_bot"];
+  DOUTKV("FromIsBot", msg->FromIsBot);
+  msg->FromFirstName = charToString(payload["result"][0]["message"]["from"]["first_name"]);
+  DOUTKV("FromFirstName", msg->FromFirstName);
+  msg->FromLastName = charToString(payload["result"][0]["message"]["from"]["last_name"]);
+  DOUTKV("FromLastName", msg->FromLastName);
+  msg->FromLanguageCode = charToString(payload["result"][0]["message"]["from"]["language_code"]);
+  DOUTKV("FromLanguageCode", msg->FromLanguageCode);
+  msg->ChatId = payload["result"][0]["message"]["chat"]["id"];
+  DOUTKV("ChatId", msg->ChatId);
+  msg->ChatFirstName = charToString(payload["result"][0]["message"]["chat"]["first_name"]);
+  DOUTKV("ChatFirstName", msg->ChatFirstName);
+  msg->ChatLastName = charToString(payload["result"][0]["message"]["chat"]["last_name"]);
+  DOUTKV("ChatLastName", msg->ChatLastName);
+  msg->ChatType = charToString(payload["result"][0]["message"]["chat"]["type"]);
+  DOUTKV("ChatType", msg->ChatType);
+  msg->Text = charToString(payload["result"][0]["message"]["text"]);
+  DOUTKV("Text", msg->Text);
+  msg->Date = payload["result"][0]["message"]["date"];
+  DOUTKV("Date", msg->Date);
+  if (msg->FromId == 0 || msg->ChatId == 0 || msg->Text.length() == 0)
   {
     // no message, just the timeout from server
     DOUT("Timout by server");
@@ -208,8 +208,7 @@ void TelegramBotClient::startPosting(String msg) {
   SslPostClient->fire(httpCommands, 8);
 }
 
-
-void TelegramBotClient::postMessage(long chatId, String text)
+void TelegramBotClient::postMessage(long chatId, String text, TBCKeyBoard &keyBoard)
 {
   if (chatId == 0) {
     DOUT("Chat not defined.");
@@ -225,9 +224,30 @@ void TelegramBotClient::postMessage(long chatId, String text)
   obj["chat_id"] = chatId;
   obj["text"] = text;
 
-  String payload;
-  obj.printTo(payload);
-  startPosting(payload);
+  if (keyBoard.length() > 0 )
+  {
+    JsonObject& jsonReplyMarkup = obj.createNestedObject("reply_markup");
+    JsonArray& jsonKeyBoard = jsonReplyMarkup.createNestedArray("keyboard");
+    DOUTKV("keyBoard.length()", keyBoard.length());
+    for (int i = 0; i < keyBoard.length(); i++)
+    {
+      DOUTKV("board.length(i): ", keyBoard.length(i));
+      JsonArray& jsonRow = jsonKeyBoard.createNestedArray();
+      for (int ii = 0; ii < keyBoard.length(i); ii++)
+      {
+        jsonRow.add(keyBoard.get(i, ii));
+      }
+    }
+    obj.set<bool>("one_time_keyboard", keyBoard.getOneTime());
+    obj.set<bool>("resize_keyboard", keyBoard.getResize());
+    obj.set<bool>("selective", false);
+
+  }
+
+  String msgString;
+  obj.printTo(msgString);
+  DOUTKV("json", msgString);
+  startPosting(msgString);
 
 }
 
@@ -244,6 +264,61 @@ void TelegramBotClient::postError(JwcProcessError err, Client* client)
     String line = client->readStringUntil('\n');
     DOUTKV("line", line);
   }
+}
+
+TBCKeyBoard::TBCKeyBoard(uint count, bool oneTime, bool resize)
+{
+  this->Count = count;
+  this->Counter = 0;
+  this->Rows = new TBCKeyBoardRow[count];
+  this->OneTime = oneTime;
+  this->Resize = resize;
+  for (int i = 0; i < count; i++)
+  {
+    this->Rows[i].Count = 0;
+    this->Rows[i].Buttons = 0;
+  }
+}
+TBCKeyBoard::~TBCKeyBoard ()
+{
+  for (int i = 0; i < Count; i++)
+  {
+    delete (Rows[i].Buttons);
+  }
+  delete(this->Rows);
+}
+
+
+TBCKeyBoard& TBCKeyBoard::push(uint count, const String buttons[])
+{
+
+  if (Counter >= Count) return *this;
+  Rows[Counter].Count = count;
+  Rows[Counter].Buttons = new String[count];
+  for (int i = 0; i < count; i++)
+  {
+    Rows[Counter].Buttons[i] = buttons[i];
+  }
+  Counter++;
+
+  return *this;
+
+}
+
+const String TBCKeyBoard::get(uint row, uint col)
+{
+  if (row >= Count) return "";
+  if (col >= Rows[row].Count) return "";
+  return Rows[row].Buttons[col];
+}
+const int TBCKeyBoard::length (uint row)
+{
+  if (row >= Count) return 0;
+  return Rows[row].Count;
+}
+const int TBCKeyBoard::length ()
+{
+  return Count;
 }
 
 
