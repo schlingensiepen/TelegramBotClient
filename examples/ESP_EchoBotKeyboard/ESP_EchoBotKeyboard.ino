@@ -21,7 +21,7 @@ const char* password = "cloudification";
 
 // Instantiate Telegram Bot secure token
 // This is provided by BotFather
-const String botToken = "<< YOUR BOT TOKEN >>";
+const String botToken = "YOUR BOT TOKEN";
 
 // Instantiate the ssl client used to communicate with Telegram's web API
 WiFiClientSecure sslPollClient;
@@ -104,6 +104,8 @@ void setup() {
   String row1[] = {"A1", "A2"};
   String row2[] = {"B1", "B2" , "B3", "B4"};
   String row3[] = {"C1", "C2" , "C3"};
+
+  // push() always returns the keyboard, so pushes can be chained 
   board
     .push(2, row1)
     .push(4, row2)

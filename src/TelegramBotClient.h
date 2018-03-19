@@ -34,6 +34,10 @@
 #define TBC_CALLBACK_ERROR_SIGNATURE void (*callbackError)(TelegramProcessError, JwcProcessError)
 #endif
 
+#ifndef uint
+#define uint unsigned int
+#endif
+
 /**
    \class TelegramProcessError
    @enum mapper::TelegramProcessError

@@ -1,7 +1,8 @@
 /**
     ESP_EchoBotErrorHandling
     Example show how to receive and send messages via Telegram's Bot API.
-    It also send an invalid message every 60 minute to illustrate error handling
+    It also send an invalid message every 60 seconds to illustrate 
+    error handling
   
     Part of TelegramBotClient (https://github.com/schlingensiepen/TelegramBotClient)    
     Jörn Schlingensiepen <joern@schlingensiepen.com>
@@ -21,7 +22,7 @@ const char* password = "cloudification";
 
 // Instantiate Telegram Bot secure token
 // This is provided by BotFather
-const String botToken = "<< YOUR BOT TOKEN >>";
+const String botToken = "YOUR BOT TOKEN";
 
 // Instantiate the ssl client used to communicate with Telegram's web API
 WiFiClientSecure sslPollClient;
@@ -35,8 +36,11 @@ TelegramBotClient client(
 void onReceive (TelegramProcessError tbcErr, JwcProcessError jwcErr, Message* msg)
 {      
     Serial.println("onReceive");
-    Serial.print("tbcErr"); Serial.print((int)tbcErr); Serial.print(":"); Serial.println(toString(tbcErr));
-    Serial.print("jwcErr"); Serial.print((int)jwcErr); Serial.print(":"); Serial.println(toString(jwcErr));
+    Serial.print("tbcErr"); Serial.print((int)tbcErr); 
+    Serial.print(":"); Serial.println(toString(tbcErr));
+    
+    Serial.print("jwcErr"); Serial.print((int)jwcErr); 
+    Serial.print(":"); Serial.println(toString(jwcErr));
   
     Serial.print("UpdateId: "); Serial.println(msg->UpdateId);      
     Serial.print("MessageId: "); Serial.println(msg->MessageId);

@@ -20,7 +20,7 @@ const char* password = "cloudification";
 
 // Instantiate Telegram Bot secure token
 // This is provided by BotFather
-const String botToken = "<< YOUR BOT TOKEN >>";
+const String botToken = "YOUR BOT TOKEN";
 
 // Instantiate the ssl client used to communicate with Telegram's web API
 WiFiClientSecure sslPollClient;
