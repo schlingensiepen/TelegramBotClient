@@ -1,5 +1,5 @@
 # TelegramBotClient
-This library provides a client for accessing Telegram's Bot API
+This library provides a non-blocking client for accessing Telegram's Bot API
 (https://core.telegram.org/bots/api). 
 It uses a pseudo-background mechanism inspired by Nick O'Leary's
 PubSubClient (https://github.com/knolleary/pubsubclient)
