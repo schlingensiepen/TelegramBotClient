@@ -396,6 +396,15 @@ class TelegramBotClient
       Client& sslPollClient)
       : TelegramBotClient (token, sslPollClient, sslPollClient, 0, 0) {};
     /**
+        \brief Constructor
+        \details Constructor, initializing only members no callbacks
+                 using the same client for posting and polling
+        \param sslPostClient SSL client used for posting messages to remote server
+    */
+    TelegramBotClient (
+      Client& sslPollClient)
+      : TelegramBotClient ("", sslPollClient, sslPollClient, 0, 0) {};
+    /**
         \brief Destructor
 
         \details Destructor
@@ -440,6 +449,12 @@ class TelegramBotClient
     */
     bool loop();
     /**
+        \brief Set Token
+
+        \details setToken
+    */
+    void setToken(String token);
+    /**
         \brief Post a message
 
         \param [in] chatId Id of the chat the message shall be sent to.
@@ -450,6 +465,7 @@ class TelegramBotClient
         \details Post a message to a given chat. 
         (Only text messages and custom keyboards are supported, yet.)
     */
+    
     void postMessage(long chatId, String text, TBCKeyBoard& keyBoard);
     /**
         \brief Post a message
