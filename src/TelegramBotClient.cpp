@@ -65,6 +65,11 @@ bool TelegramBotClient::loop()
   return false;
 }
 
+void setToken(String token) {
+  this->token=token;
+  DOUTKV ("Token", this->Token);
+}
+
 void TelegramBotClient::startPolling()
 {
   DOUT("startPolling");
