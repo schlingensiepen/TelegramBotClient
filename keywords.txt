@@ -6,25 +6,25 @@
 # Datatypes (KEYWORD1)
 ###########################################
 
-TelegramBotClient		KEYWORD1
-JsonWebClient			KEYWORD1
-JwcClientState			KEYWORD1
-JwcProcessError			KEYWORD1
+TelegramBotClient	KEYWORD1
+JsonWebClient	KEYWORD1
+JwcClientState	KEYWORD1
+JwcProcessError	KEYWORD1
 TelegramProcessError	KEYWORD1
-TBCKeyBoard				KEYWORD1
+TBCKeyBoard	KEYWORD1
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-loop 			KEYWORD2
-begin 			KEYWORD2
+loop 	KEYWORD2
+begin 	KEYWORD2
 setCallbacks 	KEYWORD2
-loop			KEYWORD2
-postMessage		KEYWORD2
-push			KEYWORD2
-length			KEYWORD2
-getOneTime		KEYWORD2
-getResize		KEYWORD2
+loop	KEYWORD2
+postMessage	KEYWORD2
+push	KEYWORD2
+length	KEYWORD2
+getOneTime	KEYWORD2
+getResize	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
